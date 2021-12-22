@@ -35,9 +35,22 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          '$number',
-          style: const TextStyle(fontSize: 60),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '$number',
+              style: const TextStyle(fontSize: 60),
+            ),
+            ElevatedButton(
+              child: const Text('+'),
+              onPressed: () {
+                setState(() {
+                  number++;
+                });
+              },
+            ),
+          ],
         ),
       ),
     );

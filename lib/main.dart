@@ -29,7 +29,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int number = 2;
+  int number = 1;
   String? msg;
   bool isLoading = false;
 
@@ -46,52 +46,54 @@ class _HomePageState extends State<HomePage> {
             ),
             if (isLoading) const CircularProgressIndicator(),
             if (msg != null) Text(msg!),
-            ElevatedButton(
-              child: const Text('+'),
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                  msg = '';
-                });
-                final repo = FakeRepository();
-                try {
-                  final result = await repo.fetchData();
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              ElevatedButton(
+                child: const Text('-'),
+                onPressed: () async {
                   setState(() {
-                    msg = result;
-                    number++;
-                    isLoading = false;
+                    isLoading = true;
+                    msg = '';
                   });
-                } catch (e) {
+                  final repo = FakeRepository();
+                  try {
+                    final result = await repo.fetchData();
+                    setState(() {
+                      msg = result;
+                      number--;
+                      isLoading = false;
+                    });
+                  } on Exception catch (e) {
+                    setState(() {
+                      msg = e.toString();
+                      isLoading = false;
+                    });
+                  }
+                },
+              ),
+              ElevatedButton(
+                child: const Text('+'),
+                onPressed: () async {
                   setState(() {
-                    msg = e.toString();
-                    isLoading = false;
+                    isLoading = true;
+                    msg = '';
                   });
-                }
-              },
-            ),
-            ElevatedButton(
-              child: const Text('-'),
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                  msg = '';
-                });
-                final repo = FakeRepository();
-                try {
-                  final result = await repo.fetchData();
-                  setState(() {
-                    msg = result;
-                    number--;
-                    isLoading = false;
-                  });
-                } on Exception catch (e) {
-                  setState(() {
-                    msg = e.toString();
-                    isLoading = false;
-                  });
-                }
-              },
-            ),
+                  final repo = FakeRepository();
+                  try {
+                    final result = await repo.fetchData();
+                    setState(() {
+                      msg = result;
+                      number++;
+                      isLoading = false;
+                    });
+                  } catch (e) {
+                    setState(() {
+                      msg = e.toString();
+                      isLoading = false;
+                    });
+                  }
+                },
+              ),
+            ]),
           ],
         ),
       ),

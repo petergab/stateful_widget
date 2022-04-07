@@ -30,6 +30,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int number = 2;
+  String? msg;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +44,50 @@ class _HomePageState extends State<HomePage> {
               '$number',
               style: const TextStyle(fontSize: 60),
             ),
+            if (isLoading) const CircularProgressIndicator(),
             ElevatedButton(
               child: const Text('+'),
-              onPressed: () {
+              onPressed: () async {
                 setState(() {
+                  isLoading = true;
+                  msg = '';
+                });
+                final repo = FakeRepository();
+                final result = await repo.fetchData();
+                setState(() {
+                  msg = result;
                   number++;
+                  isLoading = false;
                 });
               },
             ),
+            ElevatedButton(
+              child: const Text('-'),
+              onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                  msg = '';
+                });
+                final repo = FakeRepository();
+                final result = await repo.fetchData();
+                setState(() {
+                  msg = result;
+                  number--;
+                  isLoading = false;
+                });
+              },
+            ),
+            if (msg != null) Text(msg!),
           ],
         ),
       ),
     );
+  }
+}
+
+class FakeRepository {
+  Future<String> fetchData() async {
+    await Future<void>.delayed(const Duration(seconds: 1));
+    return 'Done';
   }
 }

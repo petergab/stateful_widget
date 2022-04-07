@@ -45,6 +45,7 @@ class _HomePageState extends State<HomePage> {
               style: const TextStyle(fontSize: 60),
             ),
             if (isLoading) const CircularProgressIndicator(),
+            if (msg != null) Text(msg!),
             ElevatedButton(
               child: const Text('+'),
               onPressed: () async {
@@ -53,12 +54,19 @@ class _HomePageState extends State<HomePage> {
                   msg = '';
                 });
                 final repo = FakeRepository();
-                final result = await repo.fetchData();
-                setState(() {
-                  msg = result;
-                  number++;
-                  isLoading = false;
-                });
+                try {
+                  final result = await repo.fetchData();
+                  setState(() {
+                    msg = result;
+                    number++;
+                    isLoading = false;
+                  });
+                } catch (e) {
+                  setState(() {
+                    msg = e.toString();
+                    isLoading = false;
+                  });
+                }
               },
             ),
             ElevatedButton(
@@ -69,15 +77,21 @@ class _HomePageState extends State<HomePage> {
                   msg = '';
                 });
                 final repo = FakeRepository();
-                final result = await repo.fetchData();
-                setState(() {
-                  msg = result;
-                  number--;
-                  isLoading = false;
-                });
+                try {
+                  final result = await repo.fetchData();
+                  setState(() {
+                    msg = result;
+                    number--;
+                    isLoading = false;
+                  });
+                } on Exception catch (e) {
+                  setState(() {
+                    msg = e.toString();
+                    isLoading = false;
+                  });
+                }
               },
             ),
-            if (msg != null) Text(msg!),
           ],
         ),
       ),
@@ -87,7 +101,8 @@ class _HomePageState extends State<HomePage> {
 
 class FakeRepository {
   Future<String> fetchData() async {
-    await Future<void>.delayed(const Duration(seconds: 1));
-    return 'Done';
+    await Future.delayed(const Duration(seconds: 1));
+    throw Exception('Something went wrong!');
+    // return 'Done';
   }
 }

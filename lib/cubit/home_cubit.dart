@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../main.dart';
+import '../repositories/fake_repository.dart';
 
 part 'home_state.dart';
 

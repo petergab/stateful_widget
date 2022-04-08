@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stateful_widget/repositories/fake_repository.dart';
 
 import 'cubit/home_cubit.dart';
 
@@ -66,13 +67,5 @@ class HomeCubitPage extends StatelessWidget {
         },
       ),
     );
-  }
-}
-
-class FakeRepository {
-  Future<String> fetchData() async {
-    await Future.delayed(const Duration(seconds: 1));
-    // throw Exception('Something went wrong!');
-    return 'Done';
   }
 }

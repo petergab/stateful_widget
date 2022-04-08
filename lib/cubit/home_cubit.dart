@@ -11,23 +11,23 @@ class HomeCubit extends Cubit<HomeState> {
   final FakeRepository _fakeRepository;
 
   Future<void> increment() async {
-    emit(HomeState(
-      number: state.number,
-      isLoading: true,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+      ),
+    );
 
     try {
       final result = await _fakeRepository.fetchData();
       emit(
-        HomeState(
+        state.copyWith(
           number: state.number + 1,
           msg: result,
           isLoading: false,
         ),
       );
     } catch (e) {
-      emit(HomeState(
-        number: state.number,
+      emit(state.copyWith(
         msg: e.toString(),
         isLoading: false,
       ));
@@ -35,23 +35,23 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> decrement() async {
-    emit(HomeState(
-      number: state.number,
-      isLoading: true,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+      ),
+    );
 
     try {
       final result = await _fakeRepository.fetchData();
       emit(
-        HomeState(
+        state.copyWith(
           number: state.number - 1,
           msg: result,
           isLoading: false,
         ),
       );
     } catch (e) {
-      emit(HomeState(
-        number: state.number,
+      emit(state.copyWith(
         msg: e.toString(),
         isLoading: false,
       ));

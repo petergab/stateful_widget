@@ -11,4 +11,16 @@ class HomeState {
     this.msg,
     this.isLoading = false,
   });
+
+  HomeState copyWith({
+    int? number,
+    String? msg,
+    bool? isLoading,
+  }) {
+    return HomeState(
+      number: number ?? this.number,
+      msg: msg ?? this.msg,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
 }
